@@ -95,7 +95,6 @@ function displayCalculation() {
     if (numArray.length === 2 && (numArray[0] === numArray[1])) {
         numArray.splice(0, 1);
     }
-    console.log(numArray);
     // Check to see if the numArray has at least three elements
     if (numArray.length >= 3) {
         // If the user presses the "Enter" button consecutively while entering an operation,
@@ -105,13 +104,13 @@ function displayCalculation() {
             numArray.splice(0, 2);
         } else {
             // Display the current answer to an operation
+            // Change the "count" variable to allow the user to repeatedly press the "Enter" button without
+            //      it affecting the elements in the numArray
             num = performOperation();
             valueString.textContent = num;
             count = 1;
         }
     }
-    console.log(numArray);
-    console.log(num);
 }
 function clearValues() {
     // Empty the numArray so that no values or operators currently exist
