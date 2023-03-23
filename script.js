@@ -52,7 +52,8 @@ function setValue(e) {
     if (valueString.textContent !== "") {
         num = +valueString.textContent;
     }
-    // Reset the "count" variable to allow for successive values with multiple digits to be entered
+    // Reset the "count" variable to allow for successive operations to be performed
+    //      after one has already been completed
     count = 0;
 }
 function setOperator(e) {
@@ -64,6 +65,7 @@ function setOperator(e) {
     }
     // Add the value that was previously entered before the user pressed an operator button
     numArray.push(num);
+
     // Get the operator from the user's button press as a string from the button's textContent
     operator = e.target.textContent;
 
@@ -148,3 +150,5 @@ digits.forEach((digit) => {
 // ISSUES STILL TO RESOLVE
 //  -Can still enter values that add on to the most recent total that has just been calculated
 //      -I want the new value to override the current total in the display area
+//  -Set only the last clicked "operator" button to apply to the next value
+//      -Right now, each press adds the previous "num" to be added to the numArray
