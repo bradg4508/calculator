@@ -81,7 +81,6 @@ function setOperator(e) {
 
     // Add the operator to the numArray
     numArray.push(operator);
-    console.log(numArray);
     
     // If the user presses the same operator button more than once,
     //      remove the repeated occurrences of the operator so that only one remains in the numArray
@@ -97,9 +96,6 @@ function setOperator(e) {
     // Reset num to an empty string so that the next entered value can be processed accurately
     // Prevent continuous operator button presses from filling the numArray with copies of its current contents
     num = "";
-
-    console.log(numArray);
-    console.log(valueString.textContent);
 }
 function performOperation() {
     // Run the operate() function on every three elements in the numArray
@@ -127,7 +123,7 @@ function displayCalculation() {
     //      to the numArray
     // If the user presses the Equals button without entering any values yet,
     //      the numArray will not add an empty string as an element
-    if (valueString.textContent !== "") {
+    if (valueString.textContent !== "" && num !== "") {
         numArray.push(num);
     }
     // If the user presses the Equals button more than once without adding an operation,
@@ -154,7 +150,6 @@ function displayCalculation() {
             count = 1;
         }
     }
-    console.log(numArray);
 }
 function clearValues() {
     // Empty the numArray so that no values or operators currently exist
@@ -185,3 +180,8 @@ digits.forEach((digit) => {
     // Add an event listener to the All Clear button (AC) to reset the calculator and end any ongoing operations
     clearAll.addEventListener("click", clearValues);
 });
+
+// NEED TO RESOLVE
+//      -Pressing enter after pressing an operator and without entering another value
+//       should just perform the operation on the value using itself
+//       (i.e. 3 -> + -> = ---> 6, 9, ...) -- my code (3 -> + -> = ---> 3, 3, ...)
