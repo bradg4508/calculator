@@ -64,18 +64,23 @@ function setValue(e) {
     // Reset the count variable to allow for successive operations to be performed
     //      after one has already been completed
     count = 0;
-    console.log(numArray);
 }
 function setOperator(e) {
     // Add the value that was previously entered once the user presses an operator button
     if (num !== "") {
         numArray.push(num);
     }
+    // Show the ongoing total of an operation in the display area once it includes 2 values and 1 operator
+    if (numArray.length === 3) {
+        num = performOperation();
+        valueString.textContent = num;
+    }
     // Get the operator from the user's button press as a string from the button's textContent
     operator = e.target.textContent;
 
     // Add the operator to the numArray
     numArray.push(operator);
+    console.log(numArray);
     
     // If the user presses the same operator button more than once,
     //      remove the repeated occurrences of the operator so that only one remains in the numArray
@@ -91,7 +96,7 @@ function setOperator(e) {
     // Reset num to an empty string so that the next entered value can be processed accurately
     // Prevent continuous operator button presses from filling the numArray with copies of its current contents
     num = "";
-    
+
     console.log(numArray);
 }
 function performOperation() {
