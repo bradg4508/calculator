@@ -49,28 +49,41 @@ function setValue(e) {
     valueString.textContent += e.target.textContent;
 
     // Display the value in a div above the calculator buttons
-    if (valueString.textContent !== "") {
-        num = +valueString.textContent;
-    }
+    num = +valueString.textContent;
+
     // Reset the "count" variable to allow for successive operations to be performed
     //      after one has already been completed
     count = 0;
 }
 function setOperator(e) {
+    // Add the value that was previously entered before the user pressed an operator button
+    if (valueString.textContent !== "") {
+        numArray.push(num);
+    }
     // Reset the display area to only include the next value entered by the user
     // If you don't reset, every successive value will inaccurately include the 
     //      previously entered value
     if (valueString.textContent.length > 0) {
         valueString.textContent = "";
     }
-    // Add the value that was previously entered before the user pressed an operator button
-    numArray.push(num);
-
     // Get the operator from the user's button press as a string from the button's textContent
     operator = e.target.textContent;
 
     // Add the operator to the numArray
     numArray.push(operator);
+    
+    // If the user presses the same "operator" button more than once,
+    //      remove the repeated occurrences of the operator so that only one remains in the numArray
+    if ((numArray[numArray.indexOf(operator)] === numArray[numArray.indexOf(operator) + 1])) {
+        numArray.splice(numArray.indexOf(operator) + 1, 1);
+    }
+    // If the user continuously presses different "operator" buttons more than once,
+    //      the last "operator" button that is pressed will be the one involved in the ongoing operation
+    // Remove any other previous button presses of other "operator" buttons from the numArray 
+    if((typeof numArray[numArray.indexOf(operator) - 1] === "string") ||
+       (numArray.indexOf(operator) === 0)) {
+        numArray.splice(numArray.indexOf(operator) - 1, 1);
+    }
 }
 function performOperation() {
     // Run the operate() function on every three elements in the numArray
@@ -111,6 +124,7 @@ function displayCalculation() {
             num = performOperation();
             valueString.textContent = num;
             count = 1;
+            console.log(numArray);
         }
     }
 }
