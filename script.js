@@ -33,17 +33,21 @@ let total = 0;
 let count = 0;
 
 const valueString = document.querySelector("#value");
+const digits = document.querySelectorAll("#digits button");
 const operators = document.querySelectorAll("#operators button");
 const equals = document.querySelector("#equals button");
 const clearAll = document.querySelector("#clear button");
 
 function setValue(e) {
-    // If the user presses the Equals button consecutively more than once,
-    //      the numArray will only include the number once
     // It allows the user to continue performing operations with accurate results
     // The variable count is arbitrary and only needed to indicate that an operation has occurred
     if (count === 1) {
+        // If the user presses the Equals button consecutively more than once,
+        //      the numArray will only include the number once
         numArray.splice(0, 1);
+        // Reset the display area if the user wants to enter a value 
+        //      and start performing a different operation
+        valueString.textContent = "";
     }
     // Get the value from the user's button presses as a string from the button's textContent
     valueString.textContent += e.target.textContent;
@@ -80,8 +84,7 @@ function setOperator(e) {
     // If the user continuously presses different operator buttons more than once,
     //      the last operator button that is pressed will be the one involved in the ongoing operation
     // Remove any other previous button presses of other operator buttons from the numArray 
-    if((typeof numArray[numArray.indexOf(operator) - 1] === "string") ||
-       (numArray.indexOf(operator) === 0)) {
+    if((typeof numArray[numArray.indexOf(operator) - 1] === "string") || (numArray.indexOf(operator) === 0)) {
         numArray.splice(numArray.indexOf(operator) - 1, 1);
     }
 }
@@ -107,10 +110,10 @@ function displayCalculation() {
     }
     // If the user presses the Equals button more than once without adding an operation,
     //      the numArray will only include the previously entered value as its initial element
-    if (numArray.length === 2 && (numArray[0] === numArray[1])) {
+    if ((numArray.length === 2) && (numArray[0] === numArray[1])) {
         numArray.splice(0, 1);
     }
-    // Check to see if the numArray has at least three elements
+    // Check to see if the numArray has at least three elements (3 elements are needed to perform an operation)
     if (numArray.length >= 3) {
         // If the user presses the Equals button consecutively while entering an operation,
         //      the numArray will replace any repeated values so that only one exists
@@ -126,6 +129,7 @@ function displayCalculation() {
             count = 1;
         }
     }
+    console.log(numArray);
 }
 function clearValues() {
     // Empty the numArray so that no values or operators currently exist
@@ -141,7 +145,6 @@ function clearValues() {
 // Select each of the buttons that holds a digit (0-9)
 // Add an event listener to each digit button in order to display values to the user
 //      and store them for performing operations
-const digits = document.querySelectorAll("#digits button");
 digits.forEach((digit) => {
     digit.addEventListener("click", setValue);
     
@@ -156,10 +159,4 @@ digits.forEach((digit) => {
 
     // Add an event listener to the All Clear button (AC) to reset the calculator and end any ongoing operations
     clearAll.addEventListener("click", clearValues);
-    
 });
-
-
-// ISSUES STILL TO RESOLVE
-//  -Can still enter values that add on to the most recent total that has just been calculated
-//      -I want the new value to override the current total in the display area
