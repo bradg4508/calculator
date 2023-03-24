@@ -39,6 +39,12 @@ const equals = document.querySelector("#equals button");
 const clearAll = document.querySelector("#clear button");
 
 function setValue(e) {
+    // Reset the display area to only include the next value entered by the user
+    // If you don't reset, every successive value will inaccurately include the 
+    //      previously entered value
+    if (num === "") {
+        valueString.textContent = "";
+    }
     // It allows the user to continue performing operations with accurate results
     // The variable count is arbitrary and only needed to indicate that an operation has occurred
     if (count === 1) {
@@ -58,17 +64,12 @@ function setValue(e) {
     // Reset the count variable to allow for successive operations to be performed
     //      after one has already been completed
     count = 0;
+    console.log(numArray);
 }
 function setOperator(e) {
-    // Add the value that was previously entered before the user pressed an operator button
-    if (valueString.textContent !== "") {
+    // Add the value that was previously entered once the user presses an operator button
+    if (num !== "") {
         numArray.push(num);
-    }
-    // Reset the display area to only include the next value entered by the user
-    // If you don't reset, every successive value will inaccurately include the 
-    //      previously entered value
-    if (valueString.textContent.length > 0) {
-        valueString.textContent = "";
     }
     // Get the operator from the user's button press as a string from the button's textContent
     operator = e.target.textContent;
@@ -87,6 +88,11 @@ function setOperator(e) {
     if((typeof numArray[numArray.indexOf(operator) - 1] === "string") || (numArray.indexOf(operator) === 0)) {
         numArray.splice(numArray.indexOf(operator) - 1, 1);
     }
+    // Reset num to an empty string so that the next entered value can be processed accurately
+    // Prevent continuous operator button presses from filling the numArray with copies of its current contents
+    num = "";
+    
+    console.log(numArray);
 }
 function performOperation() {
     // Run the operate() function on every three elements in the numArray
