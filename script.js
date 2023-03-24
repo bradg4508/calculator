@@ -70,8 +70,9 @@ function setOperator(e) {
     if (num !== "") {
         numArray.push(num);
     }
-    // Show the ongoing total of an operation in the display area once it includes 2 values and 1 operator
-    if (numArray.length === 3) {
+    // Show the ongoing total of an operation in the display area 
+    //      once it includes 2 values and 1 operator in between the values in the numArray
+    if (numArray.length === 3 && numArray[0] !== numArray[1]) {
         num = performOperation();
         valueString.textContent = num;
     }
@@ -98,17 +99,27 @@ function setOperator(e) {
     num = "";
 
     console.log(numArray);
+    console.log(valueString.textContent);
 }
 function performOperation() {
     // Run the operate() function on every three elements in the numArray
-    // After each operation is completed, replace the three elements in the array with a total
-    // Then, the total will be used in any successive operations
-    // Once the array is left with the total as its only remaining element, 
-    //      the loop is done running and the total can be received by the performCalculation() function
     while(numArray.length > 1) {
         total = operate(+numArray[0],numArray[1],+numArray[2]);
+        
+        // After each operation is completed, replace the three elements in the array with a total
+        // Then, the total will be used in any successive operations
+        // Once the array is left with the total as its only remaining element, 
+        //      the loop is done running and the total can be received by the performCalculation() function
         numArray.splice(0, 3, total);
     }
+    // If the total contains more than 8 decimal places, round it to 8 decimal places
+    if (String(total).includes(".")) {
+        const decimal = String(total).split(".")[1];
+        if (decimal.length > 8) {
+            return +((Math.round(total * 100000000) / 100000000).toFixed(8));
+        }
+    }
+    // If the total does not run more than 8 decimal places, just return the total as it is
     return total;
 }
 function displayCalculation() {
@@ -133,10 +144,13 @@ function displayCalculation() {
             numArray.splice(0, 2);
         } else {
             // Display the current answer to an operation
+            // Keep the unrounded values present in the numArray by setting the num variable back to total
+            //      so that future operations are calculated properly
             // Change the count variable to allow the user to repeatedly press the Equals button without
             //      it affecting the elements in the numArray
             num = performOperation();
             valueString.textContent = num;
+            num = total;
             count = 1;
         }
     }
