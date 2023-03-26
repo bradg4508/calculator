@@ -129,6 +129,7 @@ function displayCalculation() {
     if (valueString.textContent !== "" && num !== "") {
         numArray.push(num);
     }
+    console.log(numArray);
     // If the user enters a value, presses the Equals button, and then re-enters the same value,
     //      the num variable resets to an empty string to avoid adding it on to the display area's current value
     if (numArray.length === 1) {
@@ -143,7 +144,7 @@ function displayCalculation() {
             // If the user enters an operation, and then presses the Equals button,
             //      the next total will apply the previous operator and previous second value 
             //      to find its calculation
-        } else if(numArray[0] === numArray[1]) {
+        } else if(numArray[0] === numArray[1] && operator !== "") {
             numArray.splice(1, 2, operator, equalsOperatingNum);
             // If the user repeats the process of entering a value, pressing the Equals button, 
             //      and then entering a new value, the num variable will reset to an empty string 
@@ -152,7 +153,7 @@ function displayCalculation() {
             numArray.splice(0, 1);
             num = ""; 
         }
-    }    
+    }
     // If the user presses the Equals button after entering a value and an operation,
     //      the first operation will be performed as follows: (num) (operator) (num)
     if (numArray.length === 2) {
@@ -166,6 +167,7 @@ function displayCalculation() {
             numArray.push(numArray[0]);
         }
     }
+    console.log(numArray);
     // Check to see if the numArray has at least three elements (3 elements are needed to perform an operation)
     if (numArray.length >= 3) {
         // Display the current answer to an operation
