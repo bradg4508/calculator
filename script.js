@@ -31,6 +31,7 @@ let operator = "";
 const numArray = [];
 let total = 0;
 let count = 0;
+let equalsOperatingNum = 0;
 
 const valueString = document.querySelector("#value");
 const digits = document.querySelectorAll("#digits button");
@@ -99,6 +100,8 @@ function setOperator(e) {
 }
 function performOperation() {
     // Run the operate() function on every three elements in the numArray
+    // Set the equalsOperatingNum variable to the most recent value to be used in any future
+    //      successive operations involving only a press of the equals button by the user
     while(numArray.length > 1) {
         total = operate(+numArray[0],numArray[1],+numArray[2]);
         
@@ -126,23 +129,30 @@ function displayCalculation() {
     if (valueString.textContent !== "" && num !== "") {
         numArray.push(num);
     }
+    console.log("a");
+    console.log(numArray);
     // If the user enters a value, presses the Equals button, and then re-enters the same value,
     //      the num variable resets to an empty string to avoid adding it on to the display area's current value
-    console.log(numArray);
-    console.log(num);
-    console.log(valueString.textContent);
-    console.log(operator);
-
     if (numArray.length === 1) {
         num = "";
     }
-    // If the user repeats the process of entering a value, pressing the Equals button, 
-    //      and then entering a new value, the num variable will reset to an empty string 
-    //      and the NumArray will take out the original value from the numArray
+    // If the user enters an operation, and then presses the Equals button,
+    //      the next total will apply the previous operator and previous second value to find its calculation
     if ((typeof numArray[0] === "number") && (typeof numArray[1] === "number")) {
-        num = "";
-        numArray.splice(0, 1);
+        if(numArray[0] === numArray[1]) {
+            numArray.splice(1, 2, operator, equalsOperatingNum);
+            // If the user repeats the process of entering a value, pressing the Equals button, 
+            //      and then entering a new value, the num variable will reset to an empty string 
+            //      and the NumArray will take out the original value from the numArray
+        } else {
+            numArray.splice(0, 1);
+            num = ""; 
+        }
     }
+               
+    console.log("b");
+    console.log(numArray);
+    
     // If the user presses the Equals button after entering a value and an operation,
     //      the first operation will be performed as follows: (num) (operator) (num)
     if (numArray.length === 2) {
@@ -156,6 +166,8 @@ function displayCalculation() {
             numArray.push(numArray[0]);
         }
     }
+    console.log("c");
+    console.log(numArray);
     // Check to see if the numArray has at least three elements (3 elements are needed to perform an operation)
     if (numArray.length >= 3) {
         // Display the current answer to an operation
@@ -163,16 +175,14 @@ function displayCalculation() {
         //      so that future operations are calculated properly
         // Change the count variable to allow the user to repeatedly press the Equals button without
         //      it affecting the elements in the numArray
+        equalsOperatingNum = numArray[(numArray.length - 1)];
         num = performOperation();
         valueString.textContent = num;
         num = total;
-        count = 1;
+        count = 1; 
     }
-    console.log("Hello");
+    console.log("d");
     console.log(numArray);
-    console.log(num);
-    console.log(valueString.textContent);
-    console.log(operator);
 }
 function clearValues() {
     // Empty the numArray so that no values or operators currently exist
@@ -205,4 +215,7 @@ digits.forEach((digit) => {
 });
 
 // NEED TO RESOLVE
-//      
+//      -A user presses a value, an operator, and then equals to find the total.
+//       If the user then presses an operator and then equals again, the next total's operation should 
+//       apply the operator and current total
+//       (i.e. 2 -> + -> = -> + -> = -> 8    My code: 2 -> + -> = -> + -> = -> 6)
