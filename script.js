@@ -40,6 +40,12 @@ const equals = document.querySelector("#equals button");
 const clearAll = document.querySelector("#clear button");
 
 function setValue(e) {
+    // If the user divides by zero and then enters a new value, re-enable the operator and equals buttons
+    //      to allow for future operations to work with valid inputs
+    if (num === Infinity) {
+        equals.disabled = false;
+        operators.forEach((operator) => operator.disabled = false);
+    }
     // Reset the display area to only include the next value entered by the user
     // If you don't reset, every successive value will inaccurately include the 
     //      previously entered value
@@ -165,16 +171,29 @@ function displayCalculation() {
         // Display the current answer to an operation
         // Keep the unrounded values present in the numArray by setting the num variable back to total
         //      so that future operations are calculated properly
+        // If the answer involves dividing by 0, disable any future operations with this impossible answer
         // Change the count variable to allow the user to repeatedly press the Equals button without
         //      it affecting the elements in the numArray
         equalsOperatingNum = numArray[(numArray.length - 1)];
         num = performOperation();
-        valueString.textContent = num;
-        num = total;
-        count = 1; 
+        if (num === Infinity) {
+            valueString.textContent = "What!? You can't divide by 0!";
+            equals.disabled = true;
+            operators.forEach((operator) => operator.disabled = true);
+        } else {
+            valueString.textContent = num;
+            num = total;
+        }
+        count = 1;
     }
 }
 function clearValues() {
+    // If the user divides by zero and then clears their work, re-enable the operator and equals buttons
+    //      to allow for future operations to work with valid inputs
+    if (num === Infinity) {
+        equals.disabled = false;
+        operators.forEach((operator) => operator.disabled = false);
+    }
     // Empty the numArray so that no values or operators currently exist
     numArray.length = 0;
 
