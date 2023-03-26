@@ -129,11 +129,17 @@ function displayCalculation() {
     if (valueString.textContent !== "" && num !== "") {
         numArray.push(num);
     }
-    console.log(numArray);
     // If the user enters a value, presses the Equals button, and then re-enters the same value,
     //      the num variable resets to an empty string to avoid adding it on to the display area's current value
     if (numArray.length === 1) {
         num = "";
+    }
+    // If the user presses the Equals button after entering a value and an operator,
+    //      the first operation will be performed as follows: (num) (operator) (num)
+    if (numArray.length === 2) {
+        if (typeof numArray[1] === "string") {
+            numArray.push(+valueString.textContent);
+        }
     }
     // If the user repeats the process of entering a value, pressing an operator, 
     //      and then pressing the Equals button, the correct output will display
@@ -154,20 +160,6 @@ function displayCalculation() {
             num = ""; 
         }
     }
-    // If the user presses the Equals button after entering a value and an operation,
-    //      the first operation will be performed as follows: (num) (operator) (num)
-    if (numArray.length === 2) {
-        if (typeof numArray[1] === "string") {
-            numArray.push(+valueString.textContent);
-            // If the user continues the pattern of pressing an operator and then the Equals button,
-            //      the numArray will add the appropriate values in the right order 
-            //      to be ready for any successive calculations
-        } else if ((numArray[0] === numArray[1])) {
-            numArray.splice(1, 1);
-            numArray.push(numArray[0]);
-        }
-    }
-    console.log(numArray);
     // Check to see if the numArray has at least three elements (3 elements are needed to perform an operation)
     if (numArray.length >= 3) {
         // Display the current answer to an operation
