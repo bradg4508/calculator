@@ -129,17 +129,21 @@ function displayCalculation() {
     if (valueString.textContent !== "" && num !== "") {
         numArray.push(num);
     }
-    console.log("a");
-    console.log(numArray);
     // If the user enters a value, presses the Equals button, and then re-enters the same value,
     //      the num variable resets to an empty string to avoid adding it on to the display area's current value
     if (numArray.length === 1) {
         num = "";
     }
-    // If the user enters an operation, and then presses the Equals button,
-    //      the next total will apply the previous operator and previous second value to find its calculation
+    // If the user repeats the process of entering a value, pressing an operator, 
+    //      and then pressing the Equals button, the correct output will display
     if ((typeof numArray[0] === "number") && (typeof numArray[1] === "number")) {
-        if(numArray[0] === numArray[1]) {
+        if (typeof numArray[2] === "string") {
+            numArray.splice(1, 1);
+            numArray.push(numArray[0]);
+            // If the user enters an operation, and then presses the Equals button,
+            //      the next total will apply the previous operator and previous second value 
+            //      to find its calculation
+        } else if(numArray[0] === numArray[1]) {
             numArray.splice(1, 2, operator, equalsOperatingNum);
             // If the user repeats the process of entering a value, pressing the Equals button, 
             //      and then entering a new value, the num variable will reset to an empty string 
@@ -148,11 +152,7 @@ function displayCalculation() {
             numArray.splice(0, 1);
             num = ""; 
         }
-    }
-               
-    console.log("b");
-    console.log(numArray);
-    
+    }    
     // If the user presses the Equals button after entering a value and an operation,
     //      the first operation will be performed as follows: (num) (operator) (num)
     if (numArray.length === 2) {
@@ -166,8 +166,6 @@ function displayCalculation() {
             numArray.push(numArray[0]);
         }
     }
-    console.log("c");
-    console.log(numArray);
     // Check to see if the numArray has at least three elements (3 elements are needed to perform an operation)
     if (numArray.length >= 3) {
         // Display the current answer to an operation
@@ -181,8 +179,6 @@ function displayCalculation() {
         num = total;
         count = 1; 
     }
-    console.log("d");
-    console.log(numArray);
 }
 function clearValues() {
     // Empty the numArray so that no values or operators currently exist
@@ -213,9 +209,3 @@ digits.forEach((digit) => {
     // Add an event listener to the All Clear button (AC) to reset the calculator and end any ongoing operations
     clearAll.addEventListener("click", clearValues);
 });
-
-// NEED TO RESOLVE
-//      -A user presses a value, an operator, and then equals to find the total.
-//       If the user then presses an operator and then equals again, the next total's operation should 
-//       apply the operator and current total
-//       (i.e. 2 -> + -> = -> + -> = -> 8    My code: 2 -> + -> = -> + -> = -> 6)
