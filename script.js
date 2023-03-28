@@ -30,7 +30,7 @@ let num = "";
 let operator = "";
 const numArray = [];
 let total = 0;
-let count = 0;
+let operationComplete = 0;
 let equalsOperatingNum = 0;
 
 const valueString = document.querySelector("#value");
@@ -53,8 +53,8 @@ function setValue(e) {
         valueString.textContent = "";
     }
     // It allows the user to continue performing operations with accurate results
-    // The variable count is arbitrary and only needed to indicate that an operation has occurred
-    if (count === 1) {
+    // The variable operationComplete is arbitrary and only needed to indicate that an operation has occurred
+    if (operationComplete === 1) {
         // If the user presses the Equals button consecutively more than once,
         //      the numArray will only include the number once
         numArray.splice(0, 1);
@@ -76,13 +76,21 @@ function setValue(e) {
     // Display the value in a div above the calculator buttons
     num = +valueString.textContent;
 
-    // Reset the count variable to allow for successive operations to be performed
+    // Reset the operationComplete variable to allow for successive operations to be performed
     //      after one has already been completed
-    count = 0;
+    operationComplete = 0;
 }
 function setOperator(e) {
+    // If the user presses the backspace button, discard the most recently entered value
+    //      and change the current num variable in the display area
+    // If the current value is the result from a previous operation, do not let the backspace button
+    //      clear any of the digits in the currently displayed value
+    if (e.target.textContent === "\u2190" && operationComplete === 0) {
+        valueString.textContent = valueString.textContent.substring(0, (valueString.textContent.length - 1));
+        num = +valueString.textContent;
+    }
     // Add the value that was previously entered once the user presses an operator button
-    if (num !== "") {
+    if (num !== "" && e.target.textContent !== "\u2190") {
         numArray.push(num);
     }
     // Show the ongoing total of an operation in the display area 
@@ -92,11 +100,15 @@ function setOperator(e) {
         valueString.textContent = num;
     }
     // Get the operator from the user's button press as a string from the button's textContent
-    operator = e.target.textContent;
-
+    if (e.target.textContent === "\u2190") {
+        operator = "";
+    } else {
+        operator = e.target.textContent;
+    }
     // Add the operator to the numArray
-    numArray.push(operator);
-    
+    if (operator !== "") {
+        numArray.push(operator);
+    }
     // If the user presses the same operator button more than once,
     //      remove the repeated occurrences of the operator so that only one remains in the numArray
     if ((numArray[numArray.indexOf(operator)] === numArray[numArray.indexOf(operator) + 1])) {
@@ -110,7 +122,9 @@ function setOperator(e) {
     }
     // Reset num to an empty string so that the next entered value can be processed accurately
     // Prevent continuous operator button presses from filling the numArray with copies of its current contents
-    num = "";
+    if (operator !== "") {
+        num = "";
+    }
 }
 function performOperation() {
     // Run the operate() function on every three elements in the numArray
@@ -180,7 +194,7 @@ function displayCalculation() {
         // Keep the unrounded values present in the numArray by setting the num variable back to total
         //      so that future operations are calculated properly
         // If the answer involves dividing by 0, disable any future operations with this impossible answer
-        // Change the count variable to allow the user to repeatedly press the Equals button without
+        // Change the operationComplete variable to allow the user to repeatedly press the Equals button without
         //      it affecting the elements in the numArray
         equalsOperatingNum = numArray[(numArray.length - 1)];
         num = performOperation();
@@ -192,7 +206,7 @@ function displayCalculation() {
             valueString.textContent = num;
             num = total;
         }
-        count = 1;
+        operationComplete = 1;
     }
 }
 function clearValues() {
