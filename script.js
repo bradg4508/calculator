@@ -64,13 +64,23 @@ function setValue(e) {
     }
     // Get the value from the user's button presses as a string from the button's textContent
     valueString.textContent += e.target.textContent;
+    console.log(valueString.textContent);
 
+    // If the user enters more than one leading 0, the display will only show a single 0
+    if (valueString.textContent.indexOf("0") === 0 && valueString.textContent === "00") {
+        valueString.textContent = valueString.textContent.substring(0, (valueString.textContent.length - 1));
+    }
+    // If the user enters more than one decimal, the display will not show it
+    if ((valueString.textContent.match(/\./g) || []).length == 2) {
+        valueString.textContent = valueString.textContent.substring(0, (valueString.textContent.length - 1));
+    }
     // Display the value in a div above the calculator buttons
     num = +valueString.textContent;
 
     // Reset the count variable to allow for successive operations to be performed
     //      after one has already been completed
     count = 0;
+    console.log(valueString.textContent);
 }
 function setOperator(e) {
     // Add the value that was previously entered once the user presses an operator button
