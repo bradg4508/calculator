@@ -65,6 +65,11 @@ function setValue(e) {
     // Get the value from the user's button presses as a string from the button's textContent
     valueString.textContent += e.target.textContent;
 
+    // If the user wants to change the sign of the current value, the display will show the sign change
+    if (e.target.textContent === "\u00B1") {
+        valueString.textContent = valueString.textContent.substring(0, (valueString.textContent.length - 1));
+        valueString.textContent = -1 * (+valueString.textContent);
+    }
     // If the user enters more than one leading 0, the display will only show a single 0
     if (valueString.textContent.indexOf("0") === 0 && valueString.textContent === "00") {
         valueString.textContent = valueString.textContent.substring(0, (valueString.textContent.length - 1));
@@ -73,7 +78,7 @@ function setValue(e) {
     if ((valueString.textContent.match(/\./g) || []).length == 2) {
         valueString.textContent = valueString.textContent.substring(0, (valueString.textContent.length - 1));
     }
-    // Display the value in a div above the calculator buttons
+    // Store the value in the display above the calculator buttons
     num = +valueString.textContent;
 
     // Reset the operationComplete variable to allow for successive operations to be performed
