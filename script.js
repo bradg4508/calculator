@@ -55,7 +55,7 @@ function setValue(e) {
     // It allows the user to continue performing operations with accurate results
     // The variable operationComplete is arbitrary and only needed to indicate that an operation has occurred
     if (operationComplete === 1 && (numArray.length === 1 || numArray.length === 3) && 
-        e.target.textContent !== "\u2190") {
+        e.target.textContent !== "\u2190" && e.target.textContent !== "\u00B1") {
         // If the user presses the Equals button consecutively more than once,
         //      the numArray will only include the number once
         numArray.splice(0, 1);
@@ -64,6 +64,12 @@ function setValue(e) {
         valueString.textContent = "";
     }
     // Get the value from the user's button presses as a string from the button's textContent
+    // For decimal entries, the display will show a 0 in the ones place
+    if (e.target.textContent === ".") {
+        if (num === "" || num === total) {
+            valueString.textContent = "0";
+        }
+    }
     valueString.textContent += e.target.textContent;
 
     // If the user wants to change the sign of the current value, the display will show the sign change
@@ -84,7 +90,7 @@ function setValue(e) {
     // If the current value is the result from a previous operation, do not let the backspace button
     //      clear any of the digits in the currently displayed value
     if (e.target.textContent === "\u2190") {
-        if (operationComplete === 1) {
+        if ((total === num && num !== 0) || valueString.textContent === "") {
             valueString.textContent = valueString.textContent.substring(0, (valueString.textContent.length - 1));
         } else {
             valueString.textContent = valueString.textContent.substring(0, (valueString.textContent.length - 2));
@@ -103,6 +109,10 @@ function setOperator(e) {
     // Add the value that was previously entered once the user presses an operator button
     if (num !== "") {
         numArray.push(num);
+    }
+    // Add 0 to the numArray if it is the first value entered in an operation
+    if (valueString.textContent === "0" && numArray.length === 0){
+        numArray.push(+valueString.textContent);
     }
     // Show the ongoing total of an operation in the display area 
     //      once it includes 2 values and 1 operator in between the values in the numArray
