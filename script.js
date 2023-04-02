@@ -73,6 +73,11 @@ function getCalcInput(e) {
         displayCalculation();
     }
 }
+function getClearInput(e) {
+    if (e.type === "click" || e.key === "Escape") {
+        clearValues();
+    }
+}
 
 
 function setValue(input) {
@@ -165,6 +170,7 @@ function setOperator(input) {
     if (num !== "") {
         numArray.push(num);
     }
+    console.log(numArray);
     // Add 0 to the numArray if it is the first value entered in an operation
     if (valueString.textContent === "0" && numArray.length === 0){
         numArray.push(+valueString.textContent);
@@ -263,7 +269,7 @@ function displayCalculation() {
     }
     console.log(numArray);
     // Check to see if the numArray has at least three elements (3 elements are needed to perform an operation)
-    if (numArray.length >= 3) {
+    if (numArray.length >= 3 && !numArray.includes(Infinity)) {
         // Display the current answer to an operation
         // Keep the unrounded values present in the numArray by setting the num variable back to total
         //      so that future operations are calculated properly
@@ -281,6 +287,11 @@ function displayCalculation() {
             num = total;
         }
         operationComplete = 1;
+    } else if (numArray.includes(Infinity)) {
+        numArray.length = 0;
+        valueString.textContent = num;
+        equals.disabled = false;
+        operators.forEach((operator) => operator.disabled = false);
     }
 }
 function clearValues() {
@@ -315,13 +326,14 @@ digits.forEach((digit) => {
     equals.addEventListener("click", getCalcInput);
 
     // Add an event listener to the All Clear button (AC) to reset the calculator and end any ongoing operations
-    clearAll.addEventListener("click", clearValues);
+    clearAll.addEventListener("click", getClearInput);
 });
 
 // Add event listeners to support keyboard entries by the user
 document.addEventListener("keydown", getValueInput);
 document.addEventListener("keydown", getOperatorInput);
 document.addEventListener("keydown", getCalcInput);
+document.addEventListener("keydown", getClearInput);
 
 
 // Next to resolve
