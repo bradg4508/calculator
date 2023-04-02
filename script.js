@@ -43,6 +43,7 @@ const operators = document.querySelectorAll("#operators button");
 const equals = document.querySelector("#equals button");
 const clearAll = document.querySelector("#clear button");
 
+// Create functions to recognize the type of event and call the appropriate function
 function getValueInput(e) {
     if (e.type === "click") {
       valueInput = e.target.textContent;
@@ -79,7 +80,6 @@ function getClearInput(e) {
     }
 }
 
-
 function setValue(input) {
     // If the user divides by zero and then enters a new value, re-enable the operator and equals buttons
     //      to allow for future operations to work with valid inputs
@@ -91,7 +91,7 @@ function setValue(input) {
     //      after pressing equals or an operator
     // If you don't reset, every successive value will inaccurately include the 
     //      previously entered value
-    if (num === "" || valueString.textContent === "0") {
+    if (num === "" || (valueString.textContent === "0" && input !== ".")) {
         valueString.textContent = "";
     }
     // It allows the user to continue performing operations with accurate results
@@ -103,7 +103,9 @@ function setValue(input) {
         numArray.splice(0, 1);
         // Reset the display area if the user wants to enter a value 
         //      and start performing a different operation
-        valueString.textContent = "";
+        if (valueString.textContent !== "0.") {
+            valueString.textContent = "";
+        }
     }
     // Get the value from the user's button presses as a string from the button's textContent
     // For decimal entries, the display will show a 0 in the ones place
@@ -116,7 +118,6 @@ function setValue(input) {
     if (input !== "" && input !== "Backspace") {
         valueString.textContent += input;
     }
-
     // If the user wants to change the sign of the current value, the display will show the sign change
     if (input === "\u00B1") {
         valueString.textContent = valueString.textContent.substring(0, (valueString.textContent.length - 1));
@@ -170,7 +171,6 @@ function setOperator(input) {
     if (num !== "") {
         numArray.push(num);
     }
-    console.log(numArray);
     // Add 0 to the numArray if it is the first value entered in an operation
     if (valueString.textContent === "0" && numArray.length === 0){
         numArray.push(+valueString.textContent);
@@ -235,7 +235,6 @@ function displayCalculation() {
     if (valueString.textContent !== "" && num !== "") {
         numArray.push(num);
     }
-    console.log(numArray);
     // If the user enters a value, presses the Equals button, and then re-enters the same value,
     //      the num variable resets to an empty string to avoid adding it on to the display area's current value
     if (numArray.length === 1) {
@@ -267,7 +266,6 @@ function displayCalculation() {
             num = ""; 
         }
     }
-    console.log(numArray);
     // Check to see if the numArray has at least three elements (3 elements are needed to perform an operation)
     if (numArray.length >= 3 && !numArray.includes(Infinity)) {
         // Display the current answer to an operation
@@ -334,7 +332,3 @@ document.addEventListener("keydown", getValueInput);
 document.addEventListener("keydown", getOperatorInput);
 document.addEventListener("keydown", getCalcInput);
 document.addEventListener("keydown", getClearInput);
-
-
-// Next to resolve
-// -Work on decimal functionality for keyboard entries
