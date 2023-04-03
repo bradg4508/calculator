@@ -24,20 +24,22 @@ body {
     font-size: 30px;
     border: 1px solid rgb(32, 48, 184);
 }
+.calc-buttons,
+#numbers,
+#buttons-right {
+    gap: 5px;
+}
 .calc-buttons {
     display: flex;
-    gap: 5px;
 }
 #numbers {
     display: grid;
     grid-template-columns: repeat(3,1fr);
-    gap: 5px;
     margin-top: 5px;
 }
 #buttons-right {
     display: flex;
     flex-direction: column;
-    gap: 5px;
 }
 button {
     font-size: 30px;

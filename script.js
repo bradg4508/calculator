@@ -11,7 +11,6 @@ function multiply(a, b) {
 function divide(a, b) {
     return a / b;
 }
-
 // Call the operation that coincides with its operator
 // Addition (+), subtraction (-). multiplication (*), division (/)
 function operate(num1, operator, num2) {
@@ -85,7 +84,6 @@ function getClearInput(e) {
     }
     e.target.blur();
 }
-
 function setValue(input) {
     // If the user divides by zero and then enters a new value, re-enable the operator and equals buttons
     //      to allow for future operations to work with valid inputs
@@ -339,7 +337,6 @@ digits.forEach((digit) => {
     // Add an event listener to the All Clear button (AC) to reset the calculator and end any ongoing operations
     clearAll.addEventListener("click", getClearInput);
 });
-
 // Add event listeners to support keyboard entries by the user
 window.addEventListener("keydown", getValueInput);
 window.addEventListener("keydown", getOperatorInput);
