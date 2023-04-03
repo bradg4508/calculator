@@ -15,13 +15,13 @@ function divide(a, b) {
 // Call the operation that coincides with its operator
 // Addition (+), subtraction (-). multiplication (*), division (/)
 function operate(num1, operator, num2) {
-    if (operator === "+") {
+    if (operator === "\u002B" || operator === "+") {
         return add(num1, num2);
-    } else if (operator === "-") {
+    } else if (operator === "\u2212" || operator === "-") {
         return subtract(num1, num2);
-    } else if (operator === "*") {
+    } else if (operator === "\u00D7" || operator === "*") {
         return multiply(num1, num2);
-    } else if (operator === "/") {
+    } else if (operator === "\u00F7" || operator === "/") {
         return divide(num1, num2);
     }
 }
@@ -32,18 +32,20 @@ let num = "";
 let operator = "";
 const numArray = [];
 const digitArray = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "Backspace", "."];
-const operatorArray = ["+", "-", "*", "/"];
+const operatorArray = ["\u002B", "\u2212", "\u00D7", "\u00F7", "+", "-", "*", "/"];
 let total = 0;
 let operationComplete = 0;
 let equalsOperatingNum = 0;
 
 const valueString = document.querySelector("#value");
-const digits = document.querySelectorAll("#digits button");
-const operators = document.querySelectorAll("#operators button");
-const equals = document.querySelector("#equals button");
-const clearAll = document.querySelector("#clear button");
+const digits = document.querySelectorAll(".digits");
+const operators = document.querySelectorAll(".operators");
+const equals = document.querySelector("#equals");
+const clearAll = document.querySelector("#clear");
 
 // Create functions to recognize the type of event and call the appropriate function
+// Add the blur() method to remove focus from any button after clicking it
+//      so that the program will always recognize keyboard input
 function getValueInput(e) {
     if (e.type === "click") {
       valueInput = e.target.textContent;
@@ -54,6 +56,7 @@ function getValueInput(e) {
     } else {
         valueInput = "";
     }
+    e.target.blur();
 }
 function getOperatorInput(e) {
     if (e.type === "click") {
@@ -68,16 +71,19 @@ function getOperatorInput(e) {
     } else {
         operatorInput = "";
     }
+    e.target.blur();
 }
 function getCalcInput(e) {
     if (e.type === "click" || e.key === "Enter") {
         displayCalculation();
     }
+    e.target.blur();
 }
 function getClearInput(e) {
     if (e.type === "click" || e.key === "Escape") {
         clearValues();
     }
+    e.target.blur();
 }
 
 function setValue(input) {
@@ -185,10 +191,15 @@ function setOperator(input) {
     if (input !== "") {
         operator = input;
     }
+    console.log("A");
+    console.log(operator);
     // Add the operator to the numArray
     if (operator !== "") {
         numArray.push(operator);
     }
+    console.log("B");
+    console.log(operator);
+    console.log(numArray);
     // If the user presses the same operator button more than once,
     //      remove the repeated occurrences of the operator so that only one remains in the numArray
     if ((numArray[numArray.indexOf(operator)] === numArray[numArray.indexOf(operator) + 1])) {
@@ -235,6 +246,7 @@ function displayCalculation() {
     if (valueString.textContent !== "" && num !== "") {
         numArray.push(num);
     }
+    console.log(numArray);
     // If the user enters a value, presses the Equals button, and then re-enters the same value,
     //      the num variable resets to an empty string to avoid adding it on to the display area's current value
     if (numArray.length === 1) {
@@ -282,6 +294,7 @@ function displayCalculation() {
             operators.forEach((operator) => operator.disabled = true);
         } else {
             valueString.textContent = num;
+            console.log(valueString.textContent)
             num = total;
         }
         operationComplete = 1;
@@ -328,7 +341,7 @@ digits.forEach((digit) => {
 });
 
 // Add event listeners to support keyboard entries by the user
-document.addEventListener("keydown", getValueInput);
-document.addEventListener("keydown", getOperatorInput);
-document.addEventListener("keydown", getCalcInput);
-document.addEventListener("keydown", getClearInput);
+window.addEventListener("keydown", getValueInput);
+window.addEventListener("keydown", getOperatorInput);
+window.addEventListener("keydown", getCalcInput);
+window.addEventListener("keydown", getClearInput);
