@@ -139,27 +139,20 @@ function setValue(input) {
     //      discard the most recently entered value and change the current num variable in the display area
     // If the current value is the result from a previous operation, do not let the backspace button
     //      clear any of the digits in the currently displayed value
-    if (input === "\u2190") {
-        if (valueString.textContent.length >= 1 && num === total && num !== 0 && numArray.length !== 0) {
-            valueString.textContent = num;
-        } else if (valueString.textContent.length === 1) {
-            valueString.textContent = "0";
-        } else if (valueString.textContent.length > 1 && numArray.length === 0) {
-            valueString.textContent = valueString.textContent.substring(0, (valueString.textContent.length - 2));
-            if (valueString.textContent === "-" || valueString.textContent === "") {
-                valueString.textContent = "0";
-            }
-            operationComplete = 0;
-        }
-    }
-    if (input === "Backspace") {
+    if (input === "\u2190" || input === "Backspace") {
         if (valueString.textContent.length >= 1 && num === total && num !== 0 && numArray.length !== 0) {
             valueString.textContent = num;
         } else if (valueString.textContent.length <= 1) {
             valueString.textContent = "0";
         } else if (valueString.textContent.length > 1 && numArray.length === 0) {
-            valueString.textContent = valueString.textContent.substring(0, (valueString.textContent.length - 1));
-            if (valueString.textContent === "-" || valueString.textContent === "") {
+            if (input === "\u2190") {
+                valueString.textContent = valueString.textContent.substring(0, (valueString.textContent.length - 2));
+            } else if (input === "Backspace") {
+                valueString.textContent = valueString.textContent.substring(0, (valueString.textContent.length - 1));
+            }
+            if (valueString.textContent === "-" || valueString.textContent === "-0" ||
+                valueString.textContent === "-0." || valueString.textContent === "0." || 
+                valueString.textContent === "") {
                 valueString.textContent = "0";
             }
             operationComplete = 0;
@@ -189,15 +182,10 @@ function setOperator(input) {
     if (input !== "") {
         operator = input;
     }
-    console.log("A");
-    console.log(operator);
     // Add the operator to the numArray
     if (operator !== "") {
         numArray.push(operator);
     }
-    console.log("B");
-    console.log(operator);
-    console.log(numArray);
     // If the user presses the same operator button more than once,
     //      remove the repeated occurrences of the operator so that only one remains in the numArray
     if ((numArray[numArray.indexOf(operator)] === numArray[numArray.indexOf(operator) + 1])) {
@@ -244,7 +232,6 @@ function displayCalculation() {
     if (valueString.textContent !== "" && num !== "") {
         numArray.push(num);
     }
-    console.log(numArray);
     // If the user enters a value, presses the Equals button, and then re-enters the same value,
     //      the num variable resets to an empty string to avoid adding it on to the display area's current value
     if (numArray.length === 1) {
@@ -292,7 +279,6 @@ function displayCalculation() {
             operators.forEach((operator) => operator.disabled = true);
         } else {
             valueString.textContent = num;
-            console.log(valueString.textContent)
             num = total;
         }
         operationComplete = 1;

@@ -3,17 +3,23 @@
     padding: 0;
     font-family: "Saira", Arial, Helvetica, sans-serif;
 }
-html, body{
+html, body {
     height: 100%;
 }
-body {
+body,
+.calc-buttons,
+#buttons-left-top,
+#buttons-right {
     display: flex;
+}
+body {
     justify-content: center;
     align-items: center;
 }
 #calc-container {
-    border: 5px solid rgb(32, 48, 184);
+    border: 5px solid rgb(0, 0, 0);
     padding: 20px;
+    background: rgb(32, 48, 184);
 }
 #value {
     text-align: end;
@@ -21,16 +27,17 @@ body {
     padding: 3px;
     margin-bottom: 5px;
     color: rgb(0, 0, 0);
-    font-size: 30px;
-    border: 1px solid rgb(32, 48, 184);
+    font-size: 40px;
+    border: 1px solid rgb(0, 0, 0);
 }
 .calc-buttons,
+#buttons-left-top,
 #numbers,
 #buttons-right {
     gap: 5px;
 }
-.calc-buttons {
-    display: flex;
+#buttons-left-top > * {
+    flex: 1;
 }
 #numbers {
     display: grid;
@@ -38,10 +45,22 @@ body {
     margin-top: 5px;
 }
 #buttons-right {
-    display: flex;
     flex-direction: column;
+}
+#equals {
+    background: rgb(255, 130, 14);
+    color: rgb(0, 0, 0);
+}
+#equals:hover {
+    background: rgb(255, 170, 91);
 }
 button {
     font-size: 30px;
-    padding: 10px 15px;
+    padding: 10px 25px;
+    background: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+    border: 1px solid rgb(255, 255, 255);
+}
+button:hover {
+    background: rgb(100, 100, 100);
 }
