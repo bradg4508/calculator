@@ -36,7 +36,7 @@ body {
 #buttons-right {
     gap: 5px;
 }
-#buttons-left-top > * {
+#buttons-left-top button {
     flex: 1;
 }
 #numbers {
